@@ -1,0 +1,144 @@
+#zendesk-widget-container-2 {
+  height: 100%;
+}
+
+#zendesk-widget-container {
+  height: 100%;
+}
+
+.contact-container {
+  height: calc(100vh - 8rem); /* Adjust based on your header height */
+  max-height: calc(100vh - 8rem);
+  overflow: hidden;
+  color: var(--text-primary);
+}
+
+.contact-columns {
+  display: grid;
+  grid-template-columns: 100px 1fr 3fr;
+  height: 100%;
+  overflow: hidden;
+}
+
+.contact-column {
+  height: 100%;
+  overflow: hidden;
+  border-right: 1px solid var(--border-color);
+}
+
+.contact-column:last-child {
+  border-right: none;
+}
+
+/* Navigation Column */
+.nav-column {
+  background-color: var(--bg-secondary);
+  padding: 1rem 0;
+}
+
+.contact-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-secondary);
+  padding: 1rem 0.5rem;
+  width: 100%;
+  text-align: center;
+  transition: color 0.2s, background-color 0.2s;
+  cursor: pointer;
+}
+
+.nav-icon span {
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  width: auto;
+}
+
+.nav-icon.active {
+  background-color: var(--bg-primary);
+  border-left: 3px solid var(--button-bg);
+  color: var(--text-primary);
+}
+
+.nav-icon:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+}
+
+/* Content Column */
+.content-column {
+  background-color: var(--bg-primary);
+  min-width: 350px;
+  overflow-y: auto;
+}
+
+.content-column-full {
+  background-color: var(--bg-primary);
+  grid-column: span 2;
+  overflow-y: auto;
+}
+
+.content-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Details Column */
+.details-column {
+  background-color: var(--bg-secondary);
+}
+
+.details-wrapper {
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+/* @media (max-width: 1024px) {
+  .contact-columns {
+    grid-template-columns: 80px 1fr 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-columns {
+    grid-template-columns: 60px 1fr;
+  }
+
+  .details-column {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-column {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    z-index: 100;
+  }
+
+  .contact-nav {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .nav-icon {
+    padding: 0.5rem;
+  }
+} */

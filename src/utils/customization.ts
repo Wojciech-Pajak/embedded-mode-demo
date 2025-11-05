@@ -10,12 +10,12 @@ export const changeWidgetColors = () => {
 export const switchToLightThemeWidget = () => {
     window.zE("messenger:set", "customization", {
         theme: {
-            primary: "#1170b6",
+            primary: "#000000ff",
             onPrimary: "#fafafa",
             message: "#3a3a3a",
             onMessage: "#fafafa",
-            action: "#003e73",
-            onAction: "#fafafa",
+            action: "#d8f382ff",
+            onAction: "#000000ff",
             businessMessage: "#1a1a1a",
             onBusinessMessage: "#fafafa",
             background: "#fafafa",
@@ -31,11 +31,11 @@ export const switchToLightThemeWidget = () => {
 export const switchToDarkThemeWidget = () => {
     window.zE("messenger:set", "customization", {
         theme: {
-            primary: "#571b07",
+            primary: "#000000ff",
             onPrimary: "#fafafa",
             message: "#3a3a3a",
             onMessage: "#fafafa",
-            action: "#731c05",
+            action: "#000000ff",
             onAction: "#fafafa",
             businessMessage: "#fafafa",
             onBusinessMessage: "#1a1a1a",

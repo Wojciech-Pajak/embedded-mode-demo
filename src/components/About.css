@@ -1,0 +1,147 @@
+.about-page {
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+  background-color: var(--bg-primary);
+}
+
+.about-hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.about-hero h1 {
+  font-size: 3rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.about-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.about-story,
+.about-mission,
+.about-values,
+.about-cta {
+  margin-bottom: 5rem;
+}
+
+.about-story h2,
+.about-mission h2,
+.about-values h2,
+.about-cta h2 {
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+}
+
+.story-text {
+  max-width: 800px;
+}
+
+.story-text p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.mission-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.mission-card {
+  background-color: var(--card-bg);
+  padding: 2.5rem;
+  border: 1px solid var(--border-color);
+  transition: transform 0.3s ease;
+}
+
+.mission-card:hover {
+  transform: translateY(-4px);
+}
+
+.mission-card h3 {
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.mission-card p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.values-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.value-item {
+  display: flex;
+  gap: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.value-item:last-child {
+  border-bottom: none;
+}
+
+.value-number {
+  font-size: 3rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  min-width: 80px;
+}
+
+.value-content h3 {
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.value-content p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.about-cta {
+  text-align: center;
+  padding: 3rem;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+}
+
+.about-cta h2 {
+  margin-bottom: 1.5rem;
+}
+
+.about-cta p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+}
