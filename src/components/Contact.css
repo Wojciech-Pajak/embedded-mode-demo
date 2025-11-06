@@ -13,11 +13,41 @@
   color: var(--text-primary);
 }
 
+.contact-container.resizing {
+  user-select: none;
+  cursor: col-resize;
+}
+
+.contact-container.resizing * {
+  pointer-events: none;
+}
+
+.contact-container.resizing .column-resizer {
+  pointer-events: auto;
+}
+
 .contact-columns {
   display: grid;
   grid-template-columns: 100px 1fr 3fr;
   height: 100%;
   overflow: hidden;
+}
+
+.column-resizer {
+  width: 4px;
+  background-color: var(--border-color);
+  cursor: col-resize;
+  position: relative;
+  z-index: 10;
+  transition: background-color 0.2s;
+}
+
+.column-resizer:hover {
+  background-color: #d8f382ff;
+}
+
+.column-resizer:active {
+  background-color: #c5e070;
 }
 
 .contact-column {

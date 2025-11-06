@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useLocation, Routes, Route, Navigate } from "react-router-dom";
 import CustomLink from "./CustomLink";
 import { ContactInfo } from "./ContactInfo";
@@ -12,6 +12,10 @@ export const Contact: React.FC = () => {
   const [showButtons, setShowButtons] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const [customScale, setCustomScale] = useState(100);
+  const [leftColumnWidth, setLeftColumnWidth] = useState(350); // Initial width in pixels
+  const [isDragging, setIsDragging] = useState(false);
+  const isDraggingRef = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const enlarge = () => {
     const newSize = customScale + 10;
@@ -28,6 +32,48 @@ export const Contact: React.FC = () => {
       contentScale: newSize,
     });
   };
+
+  const handleMouseDown = () => {
+    setIsDragging(true);
+    isDraggingRef.current = true;
+  };
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isDraggingRef.current || !containerRef.current) return;
+
+    e.preventDefault(); // Prevent text selection and other default behaviors
+
+    const container = containerRef.current;
+    const containerRect = container.getBoundingClientRect();
+    const navColumnWidth = 100; // Fixed width of nav column
+    const resizerWidth = 4; // Width of the resizer
+    const minWidth = 250; // Minimum width for content columns
+    const newLeftWidth = e.clientX - containerRect.left - navColumnWidth;
+
+    // Calculate available space for both columns (excluding nav and resizer)
+    const totalAvailableWidth = containerRect.width - navColumnWidth - resizerWidth;
+    
+    // Ensure both columns respect minimum width
+    if (newLeftWidth >= minWidth && (totalAvailableWidth - newLeftWidth) >= minWidth) {
+      setLeftColumnWidth(newLeftWidth);
+    }
+  }, []);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+    isDraggingRef.current = false;
+  }, []);
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, handleMouseMove, handleMouseUp]);
 
   useEffect(() => {
     if (location.pathname === "/contact/message") {
@@ -74,8 +120,15 @@ export const Contact: React.FC = () => {
   }, [location.pathname]);
 
   return (
-    <div className="contact-container">
-      <div className="contact-columns">
+    <div className={`contact-container ${isDragging ? 'resizing' : ''}`} ref={containerRef}>
+      <div 
+        className="contact-columns"
+        style={{
+          gridTemplateColumns: location.pathname === "/contact/message" 
+            ? `100px ${leftColumnWidth}px 4px 1fr` 
+            : '100px 1fr 3fr'
+        }}
+      >
         <div className="contact-column nav-column">
           <nav className="contact-nav">
             <CustomLink
@@ -128,6 +181,14 @@ export const Contact: React.FC = () => {
           <h2>Your threads</h2>
           <div id="zendesk-widget-container-0" style={{ height: "100%" }}></div>
         </div>
+
+        {location.pathname === "/contact/message" && (
+          <div 
+            className="column-resizer" 
+            onMouseDown={handleMouseDown}
+            style={{ cursor: isDragging ? 'col-resize' : 'col-resize' }}
+          />
+        )}
 
         <div
           className="contact-column details-column"
