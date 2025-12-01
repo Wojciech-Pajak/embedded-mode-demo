@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CustomLink from "./CustomLink";
+import { Link } from "react-router-dom";
 import {
   changeWidgetColors,
   switchToDarkThemeWidget,
@@ -39,17 +39,25 @@ export const Header: React.FC<HeaderProps> = ({
           <img src="/src/assets/logo.png" alt="woody" className="logo-image" />
         </div>
         <nav className="nav">
-          <CustomLink to="/" className="nav-link">Home</CustomLink>
-          <CustomLink to="/products" className="nav-link">Products</CustomLink>
-          <CustomLink to="/about" className="nav-link">About</CustomLink>
-          <CustomLink to="/contact/message" className="nav-link">Contact</CustomLink>
+          <Link to="/" className="nav-link">
+            Home
+          </Link>
+          <Link to="/products" className="nav-link">
+            Products
+          </Link>
+          <Link to="/about" className="nav-link">
+            About
+          </Link>
+          <Link to="/contact/message" className="nav-link">
+            Contact
+          </Link>
         </nav>
         <button className="cart-button" onClick={onCartClick}>
           🛒 Cart ({cartItemCount})
         </button>
-        <button className="theme-toggle" onClick={toggleTheme}>
+        {/* <button className="theme-toggle" onClick={toggleTheme}>
           {theme === "light" ? "🌙" : "☀️"}
-        </button>
+        </button> */}
       </div>
     </header>
   );

@@ -10,7 +10,6 @@ import { About } from "./components/About";
 import type { Product, CartItem } from "./types";
 import { mockProducts } from "./data/mockProducts";
 import "./App.css";
-import ZEVersionManager from "./components/ZEVersionManager";
 
 const App: React.FC = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -51,7 +50,6 @@ const App: React.FC = () => {
   return (
     <Router>
       <div className="app">
-        <ZEVersionManager />
         <Header
           cartItemCount={getTotalItems()}
           onCartClick={() => setIsCartOpen(true)}

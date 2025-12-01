@@ -12,7 +12,7 @@ export const Products: React.FC = () => {
 
     if (window.zE && !isWidgetLoaded) {
       try {
-        window.zE("messenger", "load", {
+        window.zE("messenger", "render", {
           mode: "embedded",
           widget: {
             targetElement: "#zendesk-widget-container-2",

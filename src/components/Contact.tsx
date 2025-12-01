@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { useLocation, Routes, Route, Navigate } from "react-router-dom";
-import CustomLink from "./CustomLink";
+import { useLocation, Routes, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ContactInfo } from "./ContactInfo";
 import { Location } from "./Location";
 import "./Contact.css";
@@ -20,17 +20,21 @@ export const Contact: React.FC = () => {
   const enlarge = () => {
     const newSize = customScale + 10;
     setCustomScale(newSize);
-    window.zE("messenger:set", "customization", {
-      contentScale: newSize,
-    });
+    if (window.zE) {
+      window.zE("messenger:set", "customization", {
+        contentScale: newSize,
+      });
+    }
   };
 
   const diminish = () => {
     const newSize = customScale - 10;
     setCustomScale(newSize);
-    window.zE("messenger:set", "customization", {
-      contentScale: newSize,
-    });
+    if (window.zE) {
+      window.zE("messenger:set", "customization", {
+        contentScale: newSize,
+      });
+    }
   };
 
   const handleMouseDown = () => {
@@ -51,10 +55,14 @@ export const Contact: React.FC = () => {
     const newLeftWidth = e.clientX - containerRect.left - navColumnWidth;
 
     // Calculate available space for both columns (excluding nav and resizer)
-    const totalAvailableWidth = containerRect.width - navColumnWidth - resizerWidth;
-    
+    const totalAvailableWidth =
+      containerRect.width - navColumnWidth - resizerWidth;
+
     // Ensure both columns respect minimum width
-    if (newLeftWidth >= minWidth && (totalAvailableWidth - newLeftWidth) >= minWidth) {
+    if (
+      newLeftWidth >= minWidth &&
+      totalAvailableWidth - newLeftWidth >= minWidth
+    ) {
       setLeftColumnWidth(newLeftWidth);
     }
   }, []);
@@ -66,11 +74,11 @@ export const Contact: React.FC = () => {
 
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
       };
     }
   }, [isDragging, handleMouseMove, handleMouseUp]);
@@ -100,15 +108,24 @@ export const Contact: React.FC = () => {
     ) {
       isLoadingRef.current = true;
       try {
-        window.zE("messenger", "load", {
+        window.zE("messenger", "render", {
           mode: "embedded",
           conversationList: {
             targetElement: "#zendesk-widget-container-0",
+            includeHeader: false,
+            hideNewConversationButton: true,
           },
           messageLog: {
             targetElement: "#zendesk-widget-container-1",
+            includeHeader: false,
           },
         });
+        window.zE("messenger:set", "customization", {
+          conversationList: {
+            hideNewConversationButton: true,
+          },
+        });
+
         isWidgetLoadedRef.current = true;
       } catch (error) {
         console.error("Error rendering Zendesk widget:", error);
@@ -120,18 +137,22 @@ export const Contact: React.FC = () => {
   }, [location.pathname]);
 
   return (
-    <div className={`contact-container ${isDragging ? 'resizing' : ''}`} ref={containerRef}>
-      <div 
+    <div
+      className={`contact-container ${isDragging ? "resizing" : ""}`}
+      ref={containerRef}
+    >
+      <div
         className="contact-columns"
         style={{
-          gridTemplateColumns: location.pathname === "/contact/message" 
-            ? `100px ${leftColumnWidth}px 4px 1fr` 
-            : '100px 1fr 3fr'
+          gridTemplateColumns:
+            location.pathname === "/contact/message"
+              ? `100px ${leftColumnWidth}px 4px 1fr`
+              : "100px 1fr 3fr",
         }}
       >
         <div className="contact-column nav-column">
           <nav className="contact-nav">
-            <CustomLink
+            <Link
               to="/contact/info"
               className={`nav-icon ${
                 location.pathname === "/contact/info" ? "active" : ""
@@ -139,8 +160,8 @@ export const Contact: React.FC = () => {
             >
               📞
               <span>Contact Info</span>
-            </CustomLink>
-            <CustomLink
+            </Link>
+            <Link
               to="/contact/message"
               className={`nav-icon ${
                 location.pathname === "/contact/message" ? "active" : ""
@@ -148,7 +169,7 @@ export const Contact: React.FC = () => {
             >
               ✉️
               <span>Message Us</span>
-            </CustomLink>
+            </Link>
             {showButtons && (
               <div className={`nav-controls ${isExiting ? "exiting" : ""}`}>
                 <button onClick={enlarge} className="nav-control-btn">
@@ -159,7 +180,7 @@ export const Contact: React.FC = () => {
                 </button>
               </div>
             )}
-            <CustomLink
+            <Link
               to="/contact/location"
               className={`nav-icon ${
                 location.pathname === "/contact/location" ? "active" : ""
@@ -167,7 +188,7 @@ export const Contact: React.FC = () => {
             >
               📍
               <span>Location</span>
-            </CustomLink>
+            </Link>
           </nav>
         </div>
 
@@ -183,10 +204,10 @@ export const Contact: React.FC = () => {
         </div>
 
         {location.pathname === "/contact/message" && (
-          <div 
-            className="column-resizer" 
+          <div
+            className="column-resizer"
             onMouseDown={handleMouseDown}
-            style={{ cursor: isDragging ? 'col-resize' : 'col-resize' }}
+            style={{ cursor: isDragging ? "col-resize" : "col-resize" }}
           />
         )}
 

@@ -1,9 +1,12 @@
-#zendesk-widget-container-2 {
-  height: 100%;
+#zendesk-widget-container-0 {
+  height: 89% !important;
 }
 
-#zendesk-widget-container {
-  height: 100%;
+#zendesk-widget-container-1 {
+  height: 89% !important;
+}
+#zendesk-widget-container-2 {
+  height: 100% !important;
 }
 
 .contact-container {
@@ -181,7 +184,7 @@
   margin: 0;
   padding: 1.5rem 2rem;
   background-color: rgba(0, 0, 0, 0.15);
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-primary);
   border-bottom: 1px solid var(--border-color);
