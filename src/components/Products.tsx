@@ -1,28 +1,14 @@
 import React, { useState } from "react";
 import "./Products.css";
+import { Help } from "./Help";
 
 export const Products: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [sidebarContent, setSidebarContent] = useState("");
-  const [isWidgetLoaded, setIsWidgetLoaded] = useState(false);
 
   const openSidebar = (content: string) => {
     setSidebarContent(content);
     setIsSidebarOpen(true);
-
-    if (window.zE && !isWidgetLoaded) {
-      try {
-        window.zE("messenger", "render", {
-          mode: "embedded",
-          widget: {
-            targetElement: "#zendesk-widget-container-2",
-          },
-        });
-        setIsWidgetLoaded(true);
-      } catch (error) {
-        console.error("Error rendering Zendesk widget:", error);
-      }
-    }
   };
 
   const closeSidebar = () => {
@@ -48,7 +34,7 @@ export const Products: React.FC = () => {
                   className="section-button"
                   onClick={() => openSidebar("Desk Accessories")}
                 >
-                  View Details
+                  Ask us about this product
                 </button>
               )}
             </div>
@@ -69,7 +55,7 @@ export const Products: React.FC = () => {
                   className="section-button"
                   onClick={() => openSidebar("Tech Accessories")}
                 >
-                  View Details
+                  Ask us about this product
                 </button>
               )}
             </div>
@@ -90,7 +76,7 @@ export const Products: React.FC = () => {
                   className="section-button"
                   onClick={() => openSidebar("Home Office")}
                 >
-                  View Details
+                  Ask us about this product
                 </button>
               )}
             </div>
@@ -140,7 +126,7 @@ export const Products: React.FC = () => {
             ✕
           </button>
         </div>
-        <div id="zendesk-widget-container-2"></div>
+        <Help key={isSidebarOpen ? 'open' : 'closed'} />
       </div>
     </div>
   );

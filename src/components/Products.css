@@ -10,10 +10,16 @@
   overflow-y: auto;
   background-color: var(--bg-primary);
   transition: margin-right 0.3s ease;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.products-page::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .products-page.sidebar-open {
-  margin-right: 350px;
+  margin-right: 450px;
 }
 
 .products-hero {
@@ -160,8 +166,8 @@
 .sidebar {
   position: fixed;
   top: 8rem; /* Header height */
-  right: -350px;
-  width: 350px;
+  right: -450px;
+  width: 450px;
   height: calc(100vh - 8rem);
   background-color: var(--bg-primary);
   border-left: 1px solid var(--border-color);

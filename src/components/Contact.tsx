@@ -1,41 +1,17 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { useLocation, Routes, Route } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { ContactInfo } from "./ContactInfo";
-import { Location } from "./Location";
 import "./Contact.css";
-export const Contact: React.FC = () => {
-  const location = useLocation();
 
+export const Contact: React.FC = () => {
   const isWidgetLoadedRef = useRef(false);
   const isLoadingRef = useRef(false);
-  const [showButtons, setShowButtons] = useState(false);
-  const [isExiting, setIsExiting] = useState(false);
-  const [customScale, setCustomScale] = useState(100);
-  const [leftColumnWidth, setLeftColumnWidth] = useState(350); // Initial width in pixels
+  const [leftColumnWidth, setLeftColumnWidth] = useState(350);
   const [isDragging, setIsDragging] = useState(false);
   const isDraggingRef = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const enlarge = () => {
-    const newSize = customScale + 10;
-    setCustomScale(newSize);
-    if (window.zE) {
-      window.zE("messenger:set", "customization", {
-        contentScale: newSize,
-      });
-    }
-  };
-
-  const diminish = () => {
-    const newSize = customScale - 10;
-    setCustomScale(newSize);
-    if (window.zE) {
-      window.zE("messenger:set", "customization", {
-        contentScale: newSize,
-      });
-    }
-  };
+  const [hideNewConversation, setHideNewConversation] = useState(true);
+  const [hideHeader, setHideHeader] = useState(true);
+  const [contentScale, setContentScale] = useState(100);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const handleMouseDown = () => {
     setIsDragging(true);
@@ -45,20 +21,16 @@ export const Contact: React.FC = () => {
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDraggingRef.current || !containerRef.current) return;
 
-    e.preventDefault(); // Prevent text selection and other default behaviors
+    e.preventDefault();
 
     const container = containerRef.current;
     const containerRect = container.getBoundingClientRect();
-    const navColumnWidth = 100; // Fixed width of nav column
-    const resizerWidth = 4; // Width of the resizer
-    const minWidth = 250; // Minimum width for content columns
-    const newLeftWidth = e.clientX - containerRect.left - navColumnWidth;
+    const resizerWidth = 4;
+    const minWidth = 350;
+    const newLeftWidth = e.clientX - containerRect.left;
 
-    // Calculate available space for both columns (excluding nav and resizer)
-    const totalAvailableWidth =
-      containerRect.width - navColumnWidth - resizerWidth;
+    const totalAvailableWidth = containerRect.width - resizerWidth;
 
-    // Ensure both columns respect minimum width
     if (
       newLeftWidth >= minWidth &&
       totalAvailableWidth - newLeftWidth >= minWidth
@@ -84,28 +56,7 @@ export const Contact: React.FC = () => {
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   useEffect(() => {
-    if (location.pathname === "/contact/message") {
-      setIsExiting(false);
-      setShowButtons(true);
-    } else {
-      if (showButtons) {
-        setIsExiting(true);
-        const timeout = setTimeout(() => {
-          setShowButtons(false);
-          setIsExiting(false);
-        }, 300); // Match animation duration
-        return () => clearTimeout(timeout);
-      }
-    }
-  }, [location.pathname, showButtons]);
-
-  useEffect(() => {
-    if (
-      !isWidgetLoadedRef.current &&
-      !isLoadingRef.current &&
-      window.zE &&
-      location.pathname === "/contact/message"
-    ) {
+    if (!isWidgetLoadedRef.current && !isLoadingRef.current && window.zE) {
       isLoadingRef.current = true;
       try {
         window.zE("messenger", "render", {
@@ -113,7 +64,7 @@ export const Contact: React.FC = () => {
           conversationList: {
             targetElement: "#zendesk-widget-container-0",
             includeHeader: false,
-            hideNewConversationButton: true,
+            hideNewConversationButton: hideNewConversation,
           },
           messageLog: {
             targetElement: "#zendesk-widget-container-1",
@@ -121,20 +72,32 @@ export const Contact: React.FC = () => {
           },
         });
         window.zE("messenger:set", "customization", {
+          common: {
+            hideHeader: hideHeader,
+          },
           conversationList: {
-            hideNewConversationButton: true,
+            hideNewConversationButton: hideNewConversation,
           },
         });
-
         isWidgetLoadedRef.current = true;
       } catch (error) {
         console.error("Error rendering Zendesk widget:", error);
         isLoadingRef.current = false;
       }
+    } else if (isWidgetLoadedRef.current && window.zE) {
+      // Update only the hide/show state without re-rendering the whole widget
+      window.zE("messenger:set", "customization", {
+        common: {
+          hideHeader: hideHeader,
+        },
+        conversationList: {
+          hideNewConversationButton: hideNewConversation,
+        },
+      });
     } else {
       isLoadingRef.current = false;
     }
-  }, [location.pathname]);
+  }, [hideNewConversation]);
 
   return (
     <div
@@ -143,96 +106,112 @@ export const Contact: React.FC = () => {
     >
       <div
         className="contact-columns"
-        style={{
-          gridTemplateColumns:
-            location.pathname === "/contact/message"
-              ? `100px ${leftColumnWidth}px 4px 1fr`
-              : "100px 1fr 3fr",
-        }}
+        style={{ gridTemplateColumns: `${leftColumnWidth}px 4px 1fr` }}
       >
-        <div className="contact-column nav-column">
-          <nav className="contact-nav">
-            <Link
-              to="/contact/info"
-              className={`nav-icon ${
-                location.pathname === "/contact/info" ? "active" : ""
-              }`}
+        <div className="contact-column content-column">
+          <div className="header-row" style={{ position: 'relative' }}>
+            <h2 className="header-title">Your threads</h2>
+            <button
+              className="header-dropdown-toggle"
+              onClick={() => setShowDropdown((prev) => !prev)}
+              aria-label="Show actions"
+              style={{ marginLeft: 'auto' }}
             >
-              📞
-              <span>Contact Info</span>
-            </Link>
-            <Link
-              to="/contact/message"
-              className={`nav-icon ${
-                location.pathname === "/contact/message" ? "active" : ""
-              }`}
-            >
-              ✉️
-              <span>Message Us</span>
-            </Link>
-            {showButtons && (
-              <div className={`nav-controls ${isExiting ? "exiting" : ""}`}>
-                <button onClick={enlarge} className="nav-control-btn">
+              ⋮
+            </button>
+            {showDropdown && (
+              <div className="header-btn-dropdown">
+                <button
+                  className="header-btn"
+                  onClick={() => setHideNewConversation((prev) => !prev)}
+                >
+                  button
+                </button>
+                <button
+                  className="header-btn"
+                  onClick={() => {
+                    if (window.zE) {
+                      window.zE('messenger:ui', 'newConversation', {
+                        displayName: 'Support Request',
+                        iconUrl: 'https://static.zdassets.com/web_widget/latest/basic_settings_avatar.png',
+                        metadata: {
+                          source: 'help_button',
+                          priority: 'high',
+                          userId: 12345,
+                        },
+                      });
+                    }
+                  }}
+                >
+                  new
+                </button>
+                <button
+                  className="header-btn"
+                  onClick={() => {
+                    setContentScale((prev) => {
+                      const newScale = prev + 5;
+                      if (window.zE) {
+                        window.zE('messenger:set', 'customization', {
+                          common: {
+                            contentScale: newScale
+                          }
+                        });
+                      }
+                      return newScale;
+                    });
+                  }}
+                >
                   +
                 </button>
-                <button onClick={diminish} className="nav-control-btn">
+                <button
+                  className="header-btn"
+                  onClick={() => {
+                    setContentScale((prev) => {
+                      const newScale = prev - 5;
+                      if (window.zE) {
+                        window.zE('messenger:set', 'customization', {
+                          common: {
+                            contentScale: newScale
+                          }
+                        });
+                      }
+                      return newScale;
+                    });
+                  }}
+                >
                   -
+                </button>
+                <button
+                  className="header-btn"
+                  onClick={() => {
+                    setHideHeader((prev) => {
+                      const newValue = !prev;
+                      if (window.zE) {
+                        window.zE('messenger:set', 'customization', {
+                          common: {
+                            hideHeader: newValue
+                          }
+                        });
+                      }
+                      return newValue;
+                    });
+                  }}
+                >
+                  header
                 </button>
               </div>
             )}
-            <Link
-              to="/contact/location"
-              className={`nav-icon ${
-                location.pathname === "/contact/location" ? "active" : ""
-              }`}
-            >
-              📍
-              <span>Location</span>
-            </Link>
-          </nav>
-        </div>
-
-        <div
-          className="contact-column content-column"
-          style={{
-            display:
-              location.pathname === "/contact/message" ? "block" : "none",
-          }}
-        >
-          <h2>Your threads</h2>
+          </div>
           <div id="zendesk-widget-container-0" style={{ height: "100%" }}></div>
         </div>
-
-        {location.pathname === "/contact/message" && (
-          <div
-            className="column-resizer"
-            onMouseDown={handleMouseDown}
-            style={{ cursor: isDragging ? "col-resize" : "col-resize" }}
-          />
-        )}
-
         <div
-          className="contact-column details-column"
-          style={{
-            display:
-              location.pathname === "/contact/message" ? "block" : "none",
-          }}
-        >
+          className="column-resizer"
+          onMouseDown={handleMouseDown}
+          style={{ cursor: isDragging ? "col-resize" : "col-resize" }}
+        />
+        <div className="contact-column details-column">
           <h2>What's on your mind?</h2>
           <div id="zendesk-widget-container-1" style={{ height: "100%" }}></div>
-        </div>
-
-        <div
-          className="contact-column content-column-full"
-          style={{
-            display:
-              location.pathname !== "/contact/message" ? "block" : "none",
-          }}
-        >
-          <Routes>
-            <Route path="/info" element={<ContactInfo />} />
-            <Route path="/location" element={<Location />} />
-          </Routes>
         </div>
       </div>
     </div>

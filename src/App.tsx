@@ -6,7 +6,7 @@ import { ProductGrid } from "./components/ProductGrid";
 import { Cart } from "./components/Cart";
 import { Contact } from "./components/Contact";
 import { Products } from "./components/Products";
-import { About } from "./components/About";
+import { Help } from "./components/Help";
 import type { Product, CartItem } from "./types";
 import { mockProducts } from "./data/mockProducts";
 import "./App.css";
@@ -63,8 +63,8 @@ const App: React.FC = () => {
               }
             />
             <Route path="/products" element={<Products />} />
-            <Route path="/about" element={<About />} />
             <Route path="/contact/*" element={<Contact />} />
+            <Route path="/help" element={<Help />} />
           </Routes>
         </main>
         {isCartOpen && (

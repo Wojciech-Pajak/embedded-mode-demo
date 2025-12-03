@@ -45,11 +45,11 @@ export const Header: React.FC<HeaderProps> = ({
           <Link to="/products" className="nav-link">
             Products
           </Link>
-          <Link to="/about" className="nav-link">
-            About
-          </Link>
           <Link to="/contact/message" className="nav-link">
             Contact
+          </Link>
+          <Link to="/help" className="nav-link">
+            Help
           </Link>
         </nav>
         <button className="cart-button" onClick={onCartClick}>
