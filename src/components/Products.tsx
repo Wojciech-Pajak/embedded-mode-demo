@@ -4,7 +4,7 @@ import { Help } from "./Help";
 
 export const Products: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [sidebarContent, setSidebarContent] = useState("");
+  const [, setSidebarContent] = useState("");
 
   const openSidebar = (content: string) => {
     setSidebarContent(content);

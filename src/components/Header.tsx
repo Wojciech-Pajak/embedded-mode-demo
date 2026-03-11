@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  changeWidgetColors,
   switchToDarkThemeWidget,
   switchToLightThemeWidget,
 } from "../utils/customization.ts";
@@ -15,14 +14,14 @@ export const Header: React.FC<HeaderProps> = ({
   cartItemCount,
   onCartClick,
 }) => {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme] = useState<"light" | "dark">("light");
   switchToLightThemeWidget();
 
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
-  };
+  //   const _toggleTheme = () => {
+  //     const newTheme = theme === "light" ? "dark" : "light";
+  //     setTheme(newTheme);
+  //     document.documentElement.setAttribute("data-theme", newTheme);
+  //   };
 
   useEffect(() => {
     if (theme === "dark") {

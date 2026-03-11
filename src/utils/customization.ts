@@ -1,5 +1,5 @@
 export const changeWidgetColors = () => {
-  window.zE("messenger:set", "customization", {
+  window.zE?.("messenger:set", "customization", {
     theme: {
       primary: "#550868",
       // action: "#73128e",
@@ -8,7 +8,7 @@ export const changeWidgetColors = () => {
 };
 
 export const switchToLightThemeWidget = () => {
-  window.zE("messenger:set", "customization", {
+  window.zE?.("messenger:set", "customization", {
     theme: {
       primary: "#ffffffff",
       onPrimary: "#000000ff",
@@ -29,7 +29,7 @@ export const switchToLightThemeWidget = () => {
 };
 
 export const switchToDarkThemeWidget = () => {
-  window.zE("messenger:set", "customization", {
+  window.zE?.("messenger:set", "customization", {
     theme: {
       primary: "#000000ff",
       onPrimary: "#fafafa",

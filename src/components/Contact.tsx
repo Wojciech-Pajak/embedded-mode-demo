@@ -10,7 +10,7 @@ export const Contact: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [hideNewConversation, setHideNewConversation] = useState(true);
   const [hideHeader, setHideHeader] = useState(true);
-  const [contentScale, setContentScale] = useState(100);
+  const [, setContentScale] = useState(100);
   const [showDropdown, setShowDropdown] = useState(false);
 
   const handleMouseDown = () => {
